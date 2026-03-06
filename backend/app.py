@@ -5,6 +5,7 @@ TikTok/Kwai থেকে viral video নিয়ে YouTube Shorts বানা
 """
 
 import os
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 import re
 import json
 import uuid
@@ -784,9 +785,6 @@ YOUTUBE_SCOPES = [
 
 @app.route('/oauth/login')
 def oauth_login():
-    try:
-        import os
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 from google_auth_oauthlib.flow import Flow
         base_url = os.getenv('BASE_URL', request.host_url.rstrip('/'))
         redirect_uri = f"{base_url}/oauth/callback"
@@ -816,8 +814,6 @@ from google_auth_oauthlib.flow import Flow
 @app.route('/oauth/callback')
 def oauth_callback():
     try:
-        import os
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 from google_auth_oauthlib.flow import Flow
         from flask import session, redirect
         
