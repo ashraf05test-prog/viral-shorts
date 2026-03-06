@@ -43,7 +43,7 @@ GROQ_API_KEY = os.getenv('GROQ_API_KEY', '')
 
 class AIService:
     def __init__(self):
-        self.api_key = GROQ_API_KEY
+        self.api_key = os.getenv('GROQ_API_KEY', '') or os.environ.get('GROQ_API_KEY', '')
         self.base_url = "https://api.groq.com/openai/v1/chat/completions"
 
     def generate_metadata(self, video_description="cooking food viral"):
