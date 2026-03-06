@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viral Shorts Machine 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--s1:#13131a;--s2:#1c1c28;--red:#ff3d5a;--org:#ff8c00;--grn:#00e676;--blu:#2979ff;--txt:#f0f0f5;--mut:#6b6b8a;--brd:rgba(255,255,255,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--txt);font-family:'Space Grotesk',sans-serif;min-height:100vh;}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px;}
+header{padding:14px 0;border-bottom:1px solid var(--brd);background:rgba(10,10,15,0.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+.hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.logo{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--red),var(--org));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tabs{display:flex;gap:3px;background:var(--s1);padding:4px;border-radius:12px;flex-wrap:wrap;}
+.tab{padding:8px 13px;border:none;background:transparent;color:var(--mut);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;}
+.tab.on{background:var(--red);color:#fff;}
+.tab:hover:not(.on){color:var(--txt);}
+.pg{display:none;padding:20px 0 60px;}
+.pg.on{display:block;}
+.ttl{font-size:17px;font-weight:700;margin-bottom:16px;}
+.card{background:var(--s1);border:1px solid var(--brd);border-radius:14px;padding:18px;margin-bottom:14px;}
+.card-ttl{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.btn{padding:11px 18px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;display:inline-flex;align-items:center;gap:7px;}
+.btn-r{background:var(--red);color:#fff;}.btn-r:hover{background:#ff5573;transform:translateY(-1px);}
+.btn-g{background:var(--s2);color:var(--txt);border:1px solid var(--brd);}
+.btn-gr{background:var(--grn);color:#000;font-weight:700;}
+.btn-sm{padding:7px 12px;font-size:11px;}
+.btn-fw{width:100%;justify-content:center;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important;}
+input,textarea,select{background:var(--s2);border:1px solid var(--brd);border-radius:9px;color:var(--txt);font-family:'Space Grotesk',sans-serif;padding:11px 14px;font-size:13px;width:100%;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--red);}
+textarea{resize:vertical;}
+.row{display:flex;gap:9px;margin-bottom:10px;flex-wrap:wrap;}
+.row>*{flex:1;min-width:140px;}
+.pbar{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;margin:10px 0;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--red),var(--org));border-radius:3px;transition:width 0.4s;width:0%;}
+.ptxt{font-size:12px;color:var(--mut);text-align:center;margin-top:5px;}
+.stats{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px;}
+.stat{flex:1;min-width:65px;background:var(--s2);border:1px solid var(--brd);border-radius:11px;padding:13px;text-align:center;}
+.stat-n{font-size:26px;font-weight:700;color:var(--red);}
+.stat-l{font-size:10px;color:var(--mut);margin-top:3px;}
+/* URL list */
+.ulist{display:flex;flex-direction:column;gap:5px;max-height:260px;overflow-y:auto;}
+.uitem{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--s2);border:1px solid var(--brd);border-radius:8px;}
+.unum{font-size:10px;color:var(--mut);min-width:20px;font-weight:700;}
+.utxt{flex:1;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uico{font-size:15px;min-width:20px;text-align:center;}
+/* Process video cards */
+.pvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0;}
+.pvcard{background:var(--s2);border:1px solid var(--brd);border-radius:12px;padding:14px;}
+.pvcard-ttl{font-size:12px;color:var(--txt);margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pvcard label{font-size:10px;color:var(--mut);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.pvcard select,.pvcard input{font-size:11px;padding:7px 10px;margin-bottom:8px;}
+/* Output */
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.ocard{background:var(--s1);border:1px solid var(--brd);border-radius:12px;overflow:hidden;}
+.ocard video{width:100%;aspect-ratio:9/16;object-fit:cover;background:var(--s2);display:block;}
+.ocbody{padding:9px;}
+.octitle{font-size:11px;margin-bottom:6px;line-height:1.4;font-family:'Tiro Bangla',sans-serif;border:none;background:transparent;width:100%;resize:none;color:var(--txt);}
+.ocbtn{display:flex;gap:5px;}
+.ocbtn .btn{flex:1;padding:7px;font-size:10px;justify-content:center;}
+/* Audio select */
+.aitem{display:flex;align-items:center;gap:9px;padding:9px 13px;background:var(--s2);border:1px solid var(--brd);border-radius:9px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;}
+.aitem:hover{border-color:var(--red);}
+.aitem.sel{border-color:var(--grn);background:rgba(0,230,118,0.08);}
+.aname{flex:1;font-size:13px;font-weight:600;}
+.aurl{font-size:10px;color:var(--mut);flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* Schedule */
+.schrow{display:flex;gap:11px;margin-bottom:13px;}
+.tbox{flex:1;}
+.tlbl{font-size:10px;color:var(--mut);margin-bottom:5px;text-transform:uppercase;}
+input[type=time]{font-size:19px;font-weight:700;text-align:center;padding:13px;}
+/* Toggle */
+.tglrow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--brd);}
+.tgllbl{font-size:13px;font-weight:600;}
+.tgl{position:relative;width:46px;height:25px;}
+.tgl input{opacity:0;width:0;height:0;}
+.tslide{position:absolute;inset:0;background:var(--s2);border-radius:25px;cursor:pointer;transition:0.3s;border:1px solid var(--brd);}
+.tslide:before{content:'';position:absolute;height:17px;width:17px;left:3px;bottom:3px;background:var(--mut);border-radius:50%;transition:0.3s;}
+input:checked+.tslide{background:var(--grn);border-color:var(--grn);}
+input:checked+.tslide:before{transform:translateX(21px);background:#fff;}
+/* History */
+.hitem{display:flex;align-items:center;gap:11px;padding:11px;background:var(--s2);border-radius:9px;margin-bottom:7px;}
+.hinfo{flex:1;}
+.htitle{font-size:12px;font-weight:600;}
+.htime{font-size:10px;color:var(--mut);}
+/* Toast */
+.tc{position:fixed;bottom:18px;right:14px;z-index:1000;display:flex;flex-direction:column;gap:7px;}
+.toast{padding:11px 16px;border-radius:9px;font-size:13px;font-weight:600;animation:si 0.3s;max-width:270px;}
+.toast.s{background:var(--grn);color:#000;}
+.toast.e{background:var(--red);color:#fff;}
+.toast.i{background:var(--blu);color:#fff;}
+@keyframes si{from{transform:translateX(110%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.empty{text-align:center;padding:28px 16px;color:var(--mut);}
+.empty .ic{font-size:34px;margin-bottom:9px;}
+a{color:var(--blu);}
+@media(max-width:600px){.tab{padding:7px 9px;font-size:10px;}.ogrid{grid-template-columns:repeat(2,1fr);}.pvgrid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="hdr">
+      <div class="logo">🎬 Viral Shorts Machine</div>
+      <nav class="tabs">
+        <button class="tab on" onclick="go('links',this)">🔗 Links</button>
+        <button class="tab" onclick="go('process',this)">⚡ Process</button>
+        <button class="tab" onclick="go('output',this)">📦 Output</button>
+        <button class="tab" onclick="go('auto',this)">🤖 Auto</button>
+        <button class="tab" onclick="go('sett',this)">⚙️</button>
+      </nav>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+
+<!-- LINKS -->
+<div id="pg-links" class="pg on">
+  <div class="ttl">🔗 Video Links দাও</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="sTotal">0</div><div class="stat-l">Links</div></div>
+    <div class="stat"><div class="stat-n" id="sDl">0</div><div class="stat-l">Downloaded</div></div>
+    <div class="stat"><div class="stat-n" id="sProc">0</div><div class="stat-l">Ready</div></div>
+    <div class="stat"><div class="stat-n" id="sUp">0</div><div class="stat-l">Uploaded</div></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">📋 TikTok / Kwai Links Paste করো</div>
+    <textarea id="bulkTxt" rows="8" placeholder="প্রতি লাইনে একটা link:
+
+https://www.tiktok.com/@user/video/123456789
+https://vt.tiktok.com/ZSuXXXXX/
+https://vm.tiktok.com/XXXXXXX/
+https://v.kuaishou.com/XXXXXX
+
+৩০-৪০ টা একসাথে দাও!"></textarea>
+    <div style="display:flex;gap:9px;margin-top:10px;flex-wrap:wrap;">
+      <button class="btn btn-r" onclick="addLinks()">➕ Add করো</button>
+      <button class="btn btn-g" onclick="clearLinks()">🗑️ Clear</button>
+    </div>
+  </div>
+  <div class="card" id="linkCard" style="display:none">
+    <div class="card-ttl" id="linkCardTtl">0 টা Link</div>
+    <div class="ulist" id="ulist"></div>
+    <div style="margin-top:13px;">
+      <button class="btn btn-r btn-fw" id="dlBtn" onclick="dlAll()">⬇️ সব Download করো</button>
+    </div>
+    <div id="dlWrap" style="display:none">
+      <div class="pbar"><div class="pfill" id="dlFill"></div></div>
+      <div class="ptxt" id="dlTxt"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div id="pg-process" class="pg">
+  <div class="ttl">⚡ Process করো</div>
+  <div class="card">
+    <div class="card-ttl">🎵 Default Audio (সব video এ হবে)</div>
+    <div id="defAudioList"><div class="empty"><p>⚙️ Settings এ audio add করো</p></div></div>
+    <div id="selAudioShow" style="padding:9px 13px;background:var(--s2);border-radius:9px;font-size:12px;color:var(--mut);margin-top:8px;">
+      কোনো audio select করোনি — audio ছাড়া হবে
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">📁 প্রতিটা Video এর জন্য আলাদা Settings</div>
+    <div id="pvgrid" class="pvgrid">
+      <div class="empty"><div class="ic">📥</div><p>আগে Download করো</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">⚙️ Options</div>
+    <div class="tglrow"><span class="tgllbl">🔇 Auto Mute</span><label class="tgl"><input type="checkbox" id="optMute" checked><span class="tslide"></span></label></div>
+    <div class="tglrow"><span class="tgllbl">📐 9:16 Crop</span><label class="tgl"><input type="checkbox" id="optCrop" checked><span class="tslide"></span></label></div>
+    <div class="tglrow"><span class="tgllbl">🤖 AI Title+Hashtag</span><label class="tgl"><input type="checkbox" id="optAI" checked><span class="tslide"></span></label></div>
+  </div>
+  <button class="btn btn-gr btn-fw" id="procBtn" onclick="procAll()">⚡ সব Process করো</button>
+  <div id="procWrap" style="display:none;margin-top:11px;">
+    <div class="pbar"><div class="pfill" id="procFill"></div></div>
+    <div class="ptxt" id="procTxt"></div>
+  </div>
+</div>
+
+<!-- OUTPUT -->
+<div id="pg-output" class="pg">
+  <div class="ttl">📦 Output Videos</div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <button class="btn btn-g btn-sm" onclick="dlZip()">📦 ZIP</button>
+    <button class="btn btn-g btn-sm" onclick="toDrive()">☁️ Drive</button>
+    <button class="btn btn-r btn-sm" onclick="upAll()">▶️ সব Upload</button>
+  </div>
+  <div id="ogrid" class="ogrid">
+    <div class="empty" style="grid-column:1/-1"><div class="ic">🎬</div><p>Process হলে এখানে আসবে</p></div>
+  </div>
+</div>
+
+<!-- AUTO -->
+<div id="pg-auto" class="pg">
+  <div class="ttl">🤖 Auto Pilot</div>
+  <div class="card">
+    <div class="card-ttl">📅 Daily Schedule</div>
+    <div class="schrow">
+      <div class="tbox"><div class="tlbl">দুপুর</div><input type="time" id="t1" value="12:00"></div>
+      <div class="tbox"><div class="tlbl">রাত</div><input type="time" id="t2" value="20:00"></div>
+    </div>
+    <div class="tglrow"><span class="tgllbl">Auto Upload চালু</span><label class="tgl"><input type="checkbox" id="schedOn"><span class="tslide"></span></label></div>
+    <button class="btn btn-gr btn-fw" onclick="saveSched()" style="margin-top:13px">💾 Save</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">🚀 Manual Auto Upload</div>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:12px">Output থেকে random video + random audio → YouTube</p>
+    <button class="btn btn-r btn-fw" onclick="runAuto()">🚀 এখনই একটা Upload</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">📊 Upload History</div>
+    <div id="hist"><div class="empty"><div class="ic">📋</div><p>কোনো upload নেই</p></div></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="pg-sett" class="pg">
+  <div class="ttl">⚙️ Settings</div>
+  <div class="card">
+    <div class="card-ttl">🎵 Audio Links (waz / সূরা / নাশীদ)</div>
+    <div class="row">
+      <input type="text" id="aName" placeholder="নাম (সূরা ফাতিহা)">
+      <input type="text" id="aUrl" placeholder="YouTube URL">
+    </div>
+    <button class="btn btn-r btn-sm" onclick="addAudio()">➕ Add</button>
+    <div id="alist" style="margin-top:11px;"></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">☁️ Google Drive Folder</div>
+    <div class="row">
+      <input type="text" id="driveId" placeholder="Folder ID">
+      <button class="btn btn-g btn-sm" onclick="saveDrive()" style="flex:0;white-space:nowrap">💾 Save</button>
+    </div>
+    <div style="font-size:11px;color:var(--mut)">Drive URL এর শেষ অংশ copy করো</div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">🎬 YouTube Connect</div>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:12px">তোমার YouTube channel connect করো। ৩ জন আলাদা আলাদা connect করতে পারবে।</p>
+    <button class="btn btn-r btn-fw" id="ytConnBtn" onclick="connectYT()">🔗 YouTube Connect করো</button>
+    <div id="ytStatus" style="margin-top:10px;font-size:12px;color:var(--mut);text-align:center;"></div>
+  </div>
+</div>
+
+</div>
+<div class="tc" id="tc"></div>
+<script>
+const API=location.origin;
+let links=[],dlVids=[],outVids=[],selAudio=null,perVidSettings={};
+
+function go(p,btn){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.getElementById('pg-'+p).classList.add('on');
+  btn.classList.add('on');
+  if(p==='process')loadProc();
+  if(p==='output')renderOut();
+  if(p==='sett')loadSett();
+  if(p==='auto')loadHist();
+}
+
+function toast(m,t='i'){
+  const el=document.createElement('div');
+  el.className=`toast ${t}`;el.textContent=m;
+  document.getElementById('tc').appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+
+// LINKS
+function addLinks(){
+  const txt=document.getElementById('bulkTxt').value.trim();
+  if(!txt){toast('কোনো link নেই!','e');return;}
+  const lines=txt.split('\n').map(l=>l.trim()).filter(l=>l.startsWith('http'));
+  if(!lines.length){toast('Valid URL নেই!','e');return;}
+  let n=0;
+  lines.forEach(url=>{if(!links.find(l=>l.url===url)){links.push({url,st:'pending',vid:null});n++;}});
+  document.getElementById('bulkTxt').value='';
+  renderLinks();updStats();
+  toast(`✅ ${n}টা link add!`,'s');
+}
+function clearLinks(){if(!confirm('সব মুছবো?'))return;links=[];dlVids=[];renderLinks();updStats();}
+function renderLinks(){
+  const c=document.getElementById('linkCard');
+  if(!links.length){c.style.display='none';return;}
+  c.style.display='block';
+  document.getElementById('linkCardTtl').textContent=`${links.length}টা Link`;
+  const ico={pending:'⏳',downloading:'⬇️',done:'✅',failed:'❌'};
+  document.getElementById('ulist').innerHTML=links.map((l,i)=>`
+    <div class="uitem">
+      <span class="unum">${i+1}</span>
+      <span class="utxt">${l.url.length>48?l.url.slice(0,48)+'...':l.url}</span>
+      <span class="uico">${ico[l.st]||'⏳'}</span>
+    </div>`).join('');
+}
+async function dlAll(){
+  const pend=links.filter(l=>l.st==='pending'||l.st==='failed');
+  if(!pend.length){toast('সব done!','i');return;}
+  const btn=document.getElementById('dlBtn');btn.disabled=true;
+  const wrap=document.getElementById('dlWrap'),fill=document.getElementById('dlFill'),txt=document.getElementById('dlTxt');
+  wrap.style.display='block';
+  let done=0;
+  for(const l of pend){
+    l.st='downloading';renderLinks();
+    txt.textContent=`Downloading ${done+1}/${pend.length}...`;
+    fill.style.width=(done/pend.length*100)+'%';
+    try{
+      const src=l.url.includes('tiktok')?'tiktok':'kwai';
+      const r=await fetch(`${API}/api/download`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:l.url,source:src})});
+      const d=await r.json();
+      if(d.success){l.st='done';l.vid=d.video_id;dlVids.push({vid:d.video_id,url:l.url,size:d.size,title:l.url.split('/').pop().slice(0,20)});toast(`✅ ${done+1}/${pend.length}`,'s');}
+      else{l.st='failed';toast(`❌ Failed: ${d.error?.slice(0,40)}`,'e');}
+    }catch(e){l.st='failed';}
+    done++;renderLinks();updStats();
+  }
+  fill.style.width='100%';txt.textContent=`✅ ${done}টা download হয়েছে!`;
+  btn.disabled=false;
+  toast('Process tab এ যাও 👉','i');
+}
+function updStats(){
+  document.getElementById('sTotal').textContent=links.length;
+  document.getElementById('sDl').textContent=links.filter(l=>l.st==='done').length;
+  document.getElementById('sProc').textContent=outVids.length;
+  document.getElementById('sUp').textContent=JSON.parse(localStorage.getItem('hist')||'[]').length;
+}
+
+// PROCESS
+function loadProc(){
+  const audios=JSON.parse(localStorage.getItem('audios')||'[]');
+  const dal=document.getElementById('defAudioList');
+  if(audios.length){
+    dal.innerHTML=audios.map((a,i)=>`
+      <div class="aitem ${selAudio?.url===a.url?'sel':''}" onclick="selAudioFn(${i})">
+        <span>🎵</span><span class="aname">${a.name}</span>
+        <span class="aurl">${a.url}</span>
+        ${selAudio?.url===a.url?'<span style="color:var(--grn)">✓</span>':''}
+      </div>`).join('');
+  } else {
+    dal.innerHTML='<div class="empty"><p>⚙️ Settings এ audio add করো</p></div>';
+  }
+
+  const grid=document.getElementById('pvgrid');
+  if(!dlVids.length){
+    grid.innerHTML='<div class="empty"><div class="ic">📥</div><p>Links tab থেকে download করো</p></div>';
+    return;
+  }
+
+  // Per-video settings cards
+  grid.innerHTML=dlVids.map((v,i)=>{
+    const ps=perVidSettings[v.vid]||{};
+    const audioOpts=audios.map((a,ai)=>`<option value="${a.url}" ${ps.audio===a.url?'selected':''}>${a.name}</option>`).join('');
+    return `
+    <div class="pvcard">
+      <div class="pvcard-ttl">📹 Video ${i+1}</div>
+      <label>🎵 Audio</label>
+      <select id="pv-audio-${v.vid}" onchange="setPV('${v.vid}','audio',this.value)">
+        <option value="">-- Default / Random --</option>
+        ${audioOpts}
+      </select>
+      <label>📝 Description (AI এর জন্য)</label>
+      <input type="text" id="pv-desc-${v.vid}" placeholder="cooking, fish, biryani..." 
+             value="${ps.desc||'cooking food viral bangladesh'}"
+             onchange="setPV('${v.vid}','desc',this.value)">
+    </div>`;
+  }).join('');
+}
+
+function selAudioFn(i){
+  const a=JSON.parse(localStorage.getItem('audios')||'[]')[i];
+  selAudio=a;
+  document.getElementById('selAudioShow').textContent=`🎵 Default: ${a.name}`;
+  document.getElementById('selAudioShow').style.color='var(--grn)';
+  loadProc();
+  toast(`✅ ${a.name} default হিসেবে select!`,'s');
+}
+
+function setPV(vid,key,val){
+  if(!perVidSettings[vid])perVidSettings[vid]={};
+  perVidSettings[vid][key]=val;
+}
+
+async function procAll(){
+  if(!dlVids.length){toast('Download করো আগে','e');return;}
+  const btn=document.getElementById('procBtn');btn.disabled=true;
+  const wrap=document.getElementById('procWrap'),fill=document.getElementById('procFill'),txt=document.getElementById('procTxt');
+  wrap.style.display='block';
+  let done=0;
+  for(const v of dlVids){
+    txt.textContent=`Processing ${done+1}/${dlVids.length}...`;
+    fill.style.width=(done/dlVids.length*100)+'%';
+    const ps=perVidSettings[v.vid]||{};
+    const audioUrl=ps.audio||selAudio?.url||'';
+    const desc=ps.desc||document.getElementById(`pv-desc-${v.vid}`)?.value||'cooking food viral bangladesh';
+    try{
+      const r=await fetch(`${API}/api/process`,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({video_id:v.vid,audio_url:audioUrl,description:desc})});
+      const d=await r.json();
+      if(d.success){
+        outVids.push({id:d.output_id,meta:d.metadata});
+        toast(`✅ ${done+1} — ${d.metadata?.title?.slice(0,25)||'done'}`,'s');
+      }else{
+        toast(`❌ ${d.error?.slice(0,40)}`,'e');
+      }
+    }catch(e){toast(`❌ ${e.message}`,'e');}
+    done++;
+  }
+  fill.style.width='100%';
+  txt.textContent=`✅ ${outVids.length}টা video ready!`;
+  btn.disabled=false;updStats();
+  toast('Output tab এ দেখো 📦','i');
+}
+
+// OUTPUT
+function renderOut(){
+  const g=document.getElementById('ogrid');
+  if(!outVids.length){
+    g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ic">🎬</div><p>Process হলে এখানে আসবে</p></div>';
+    return;
+  }
+  g.innerHTML=outVids.map(v=>`
+    <div class="ocard" id="oc-${v.id}">
+      <video src="${API}/api/preview/${v.id}" muted playsinline preload="metadata"
+             onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"></video>
+      <div class="ocbody">
+        <textarea class="octitle" id="ct-${v.id}" rows="3">${v.meta?.title||'Viral Short'}</textarea>
+        <div style="font-size:9px;color:var(--mut);margin-bottom:7px">${v.meta?.hashtags||'#shorts #viral'}</div>
+        <div class="ocbtn">
+          <button class="btn btn-r" onclick="upOne('${v.id}')">▶️</button>
+          <button class="btn btn-g" onclick="delOut('${v.id}')">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+  updStats();
+}
+
+async function dlZip(){
+  if(!outVids.length){toast('কোনো video নেই','e');return;}
+  toast('ZIP হচ্ছে...','i');
+  const r=await fetch(`${API}/api/zip`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({output_ids:outVids.map(v=>v.id)})});
+  if(r.ok){const b=await r.blob();const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='viral_shorts.zip';a.click();toast('✅ ZIP downloaded!','s');}
+  else toast('❌ ZIP failed','e');
+}
+
+async function toDrive(){
+  toast('Drive এ পাঠাচ্ছি...','i');
+  const r=await fetch(`${API}/api/upload-to-drive`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({output_ids:outVids.map(v=>v.id)})});
+  const d=await r.json();
+  toast(d.success?'✅ Drive এ গেছে!':'❌ Drive error',d.success?'s':'e');
+}
+
+async function upOne(vid){
+  const t=document.getElementById('ct-'+vid)?.value||'Viral Short';
+  const v=outVids.find(x=>x.id===vid);
+  toast('⬆️ Upload হচ্ছে...','i');
+  const r=await fetch(`${API}/api/upload-to-youtube`,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({output_id:vid,metadata:{title:t,description:v?.meta?.description||'',tags:v?.meta?.tags||[]}})});
+  const d=await r.json();
+  if(d.success){toast('✅ Uploaded!','s');saveHist({title:t,url:d.url});if(d.url)window.open(d.url,'_blank');}
+  else toast(`❌ ${d.error}`,'e');
+}
+
+async function upAll(){if(!outVids.length){toast('কোনো video নেই','e');return;}for(const v of outVids)await upOne(v.id);}
+function delOut(vid){outVids=outVids.filter(v=>v.id!==vid);document.getElementById('oc-'+vid)?.remove();updStats();}
+
+// AUTO
+async function saveSched(){
+  const t1=document.getElementById('t1').value,t2=document.getElementById('t2').value;
+  const en=document.getElementById('schedOn').checked;
+  await fetch(`${API}/api/state`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schedule:{times:[t1,t2],enabled:en}})});
+  toast(`✅ Schedule: ${t1} ও ${t2}`,'s');
+}
+
+async function runAuto(){
+  toast('🤖 চলছে...','i');
+  const r=await fetch(`${API}/api/auto-pilot`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  const d=await r.json();
+  if(d.success){toast('✅ Upload!','s');saveHist({title:d.metadata?.title,url:d.url});loadHist();}
+  else toast(`❌ ${d.error}`,'e');
+}
+
+function saveHist(item){
+  const h=JSON.parse(localStorage.getItem('hist')||'[]');
+  h.unshift({...item,time:new Date().toISOString()});
+  localStorage.setItem('hist',JSON.stringify(h.slice(0,50)));updStats();
+}
+
+function loadHist(){
+  const h=JSON.parse(localStorage.getItem('hist')||'[]');
+  const c=document.getElementById('hist');
+  if(!h.length){c.innerHTML='<div class="empty"><div class="ic">📋</div><p>কোনো upload নেই</p></div>';return;}
+  c.innerHTML=h.map(x=>`
+    <div class="hitem">
+      <span style="font-size:20px">✅</span>
+      <div class="hinfo"><div class="htitle">${x.title||'Viral Short'}</div><div class="htime">${new Date(x.time).toLocaleString('bn-BD')}</div></div>
+      ${x.url?`<a href="${x.url}" target="_blank" class="btn btn-g btn-sm">দেখো</a>`:''}
+    </div>`).join('');
+}
+
+// SETTINGS
+function addAudio(){
+  const n=document.getElementById('aName').value.trim()||'Audio';
+  const u=document.getElementById('aUrl').value.trim();
+  if(!u){toast('URL দাও','e');return;}
+  const a=JSON.parse(localStorage.getItem('audios')||'[]');
+  a.push({name:n,url:u});
+  localStorage.setItem('audios',JSON.stringify(a));
+  fetch(`${API}/api/add-audio-link`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,url:u})});
+  document.getElementById('aName').value='';document.getElementById('aUrl').value='';
+  toast(`✅ ${n} saved!`,'s');loadSett();
+}
+
+function loadSett(){
+  const a=JSON.parse(localStorage.getItem('audios')||'[]');
+  document.getElementById('alist').innerHTML=a.length?a.map((x,i)=>`
+    <div class="aitem">
+      <span>🎵</span><span class="aname">${x.name}</span>
+      <span class="aurl">${x.url}</span>
+      <button class="btn btn-g btn-sm" onclick="delAudio(${i})">🗑️</button>
+    </div>`).join(''):'<div class="empty"><p>কোনো audio নেই</p></div>';
+  fetch(`${API}/api/state`).then(r=>r.json()).then(s=>{
+    const f=document.getElementById('driveId');if(f)f.value=s.drive_folder_id||'';
+  }).catch(()=>{});
+}
+
+function delAudio(i){
+  const a=JSON.parse(localStorage.getItem('audios')||'[]');
+  a.splice(i,1);localStorage.setItem('audios',JSON.stringify(a));loadSett();
+}
+
+async function saveDrive(){
+  const id=document.getElementById('driveId').value.trim();
+  await fetch(`${API}/api/state`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({drive_folder_id:id})});
+  toast('✅ Drive saved!','s');
+}
+
+async function connectYT(){
+  const btn=document.getElementById('ytConnBtn');
+  const status=document.getElementById('ytStatus');
+  btn.disabled=true;
+  status.textContent='Loading...';
+  try{
+    const r=await fetch(`${API}/oauth/login`);
+    const d=await r.json();
+    if(d.auth_url){
+      status.textContent='নতুন window এ login করো...';
+      const w=window.open(d.auth_url,'_blank','width=600,height=700');
+      // Check every 2 seconds if connected
+      const check=setInterval(async()=>{
+        try{
+          const sr=await fetch(`${API}/api/state`);
+          const sd=await sr.json();
+          if(sd.youtube_connected){
+            clearInterval(check);
+            btn.disabled=false;
+            btn.textContent='✅ YouTube Connected!';
+            btn.style.background='var(--grn)';
+            btn.style.color='#000';
+            status.textContent='সফলভাবে connect হয়েছে!';
+            status.style.color='var(--grn)';
+            toast('✅ YouTube Connected!','s');
+          }
+        }catch(e){}
+      },2000);
+      setTimeout(()=>{clearInterval(check);btn.disabled=false;},120000);
+    }else{
+      status.textContent=d.error||'Error';
+      btn.disabled=false;
+    }
+  }catch(e){
+    status.textContent=e.message;
+    btn.disabled=false;
+  }
+}
+
+// Init
+updStats();
+</script>
+</body>
+</html>
