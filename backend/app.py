@@ -464,7 +464,7 @@ def save_state(state):
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_frontend(path):
-    dist_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend', 'dist')
+    dist_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'dist')
     if path and os.path.exists(os.path.join(dist_dir, path)):
         return send_from_directory(dist_dir, path)
     return send_from_directory(dist_dir, 'index.html')
