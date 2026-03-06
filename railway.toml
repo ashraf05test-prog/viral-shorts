@@ -1,9 +1,10 @@
 [build]
 builder = "nixpacks"
+buildCommand = "pip install -r backend/requirements.txt"
 
 [deploy]
-startCommand = "gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1"
+startCommand = "cd backend && gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1"
 healthcheckPath = "/api/health"
 
 [nixpacks]
-aptPkgs = ["ffmpeg"]
+aptPkgs = ["ffmpeg", "python3-pip"]
