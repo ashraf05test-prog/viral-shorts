@@ -785,7 +785,9 @@ YOUTUBE_SCOPES = [
 @app.route('/oauth/login')
 def oauth_login():
     try:
-        from google_auth_oauthlib.flow import Flow
+        import os
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+from google_auth_oauthlib.flow import Flow
         base_url = os.getenv('BASE_URL', request.host_url.rstrip('/'))
         redirect_uri = f"{base_url}/oauth/callback"
         
@@ -814,7 +816,9 @@ def oauth_login():
 @app.route('/oauth/callback')
 def oauth_callback():
     try:
-        from google_auth_oauthlib.flow import Flow
+        import os
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+from google_auth_oauthlib.flow import Flow
         from flask import session, redirect
         
         redirect_uri = session.get('redirect_uri', request.host_url.rstrip('/') + '/oauth/callback')
